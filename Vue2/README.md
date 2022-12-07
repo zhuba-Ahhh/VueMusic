@@ -1,6 +1,6 @@
 # Vue2Music
 
-## 🌈似音流年——基于Vue的网易云音乐网站
+## 🌈似音流年——基于Vue2.x的网易云音乐网站
 
 开头还是感谢 [网易云音乐 NodeJS 版 API](https://binaryify.github.io/NeteaseCloudMusicApi/#/)提供的API练手。
 
@@ -8,9 +8,10 @@
 
 ## 💻技术栈
 
-- Vue全家桶
-- ElementUi
-- Axios
+- **Vue全家桶**
+- **ElementUi**
+- **Webpack**
+- **Axios**
 
 ## ⚡项目内容
 
@@ -50,7 +51,7 @@
 
 ## 💎演示
 
-[似音流年](https://music.zhuba.cloud/#/musicHome/findMusic/personRecom)
+[似音流年](https://music.zhuba.cloud/)
 
 ## 🎈证书
 
