@@ -8,8 +8,8 @@ type tagsName = {
 };
 
 type playlist_infoType = {
-  playlist_tags: Array<tagsName>;
-  playlist_list: Array<string>;
+  playlist_tags: tagsName[];
+  playlist_list: string[];
   playlist_index: number;
   playlist_params: paramsType & { offset: number };
   playlist_count: number;

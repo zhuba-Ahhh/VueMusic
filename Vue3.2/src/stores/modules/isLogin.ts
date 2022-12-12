@@ -6,8 +6,10 @@ const useIsLoginStore = defineStore(
   "isLogin",
   () => {
     const isLogin = ref<boolean>(false);
-
-    return { isLogin };
+    const setLogin = (val: boolean) => {
+      isLogin.value = val;
+    };
+    return { isLogin, setLogin };
   },
   {
     // 查看源码==技术文档

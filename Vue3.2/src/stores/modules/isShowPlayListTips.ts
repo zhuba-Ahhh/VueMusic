@@ -6,7 +6,9 @@ const useIsShowPlayListTips = defineStore(
   "isShowPlayListTips",
   () => {
     const isShowPlayListTips = ref<boolean>(false);
-
+    const setIsShowPlayListTips = (val: boolean) => {
+      isShowPlayListTips.value = val;
+    };
     return { isShowPlayListTips };
   },
   {

@@ -1,13 +1,16 @@
 import { reactive } from "vue";
 import { defineStore } from "pinia";
+import type { songType } from "@/types";
 
 // 播放列表
 const usePlayListStore = defineStore(
   "playList",
   () => {
-    const isLogin = reactive([]);
-
-    return { isLogin };
+    let playList: songType[] = reactive([]);
+    const setPlayList = (val: songType[]) => {
+      playList = val;
+    };
+    return { playList, setPlayList };
   },
   {
     // 查看源码==技术文档

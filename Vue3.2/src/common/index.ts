@@ -7,7 +7,7 @@ interface Artist {
 }
 
 // 专辑
-const ALBUM_AREA: Array<albumArea> = [
+const ALBUM_AREA: albumArea[] = [
   {
     name: "全部",
     code: "all",
@@ -31,11 +31,11 @@ const ALBUM_AREA: Array<albumArea> = [
 ];
 
 // MV
-const MV_AREA: Array<string> = ["全部", "内地", "港台", "欧美", "日本", "韩国"];
-const MV_TYPE: Array<string> = ["全部", "官方版", "原生", "现场版", "网易出品"];
+const MV_AREA: string[] = ["全部", "内地", "港台", "欧美", "日本", "韩国"];
+const MV_TYPE: string[] = ["全部", "官方版", "原生", "现场版", "网易出品"];
 
 // 歌手
-const ARTIST_AREA: Array<Artist> = [
+const ARTIST_AREA: Artist[] = [
   {
     label: "全部",
     val: -1,
@@ -61,7 +61,7 @@ const ARTIST_AREA: Array<Artist> = [
     val: 0,
   },
 ];
-const ARTIST_TYPE: Array<Artist> = [
+const ARTIST_TYPE: Artist[] = [
   {
     label: "全部",
     val: -1,

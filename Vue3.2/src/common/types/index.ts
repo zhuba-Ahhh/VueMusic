@@ -4,6 +4,7 @@ export interface albumArea {
   code: string;
 }
 
+// 请求传参
 export interface paramsType {
   limit: number;
   order?: string;

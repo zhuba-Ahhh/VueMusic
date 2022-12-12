@@ -1,12 +1,12 @@
 import { reactive, onMounted } from "vue";
 import { topAlbum } from "@/apis/modules";
 import { ElMessage } from "element-plus";
-import type { albumArea, paramsType } from "../types";
+import type { paramsType } from "../types";
 import ALBUM_AREA from "../index";
 
 type album_infoType = {
   album_area: any;
-  album_list: Array<string>;
+  album_list: string[];
   album_index: number;
   album_params: paramsType;
   album_count: number;

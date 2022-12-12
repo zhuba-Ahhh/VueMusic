@@ -6,8 +6,10 @@ const useLoginDialogVisible = defineStore(
   "loginDialogVisible",
   () => {
     const loginDialogVisible = ref<boolean>(false);
-
-    return { loginDialogVisible };
+    const setLoginDialog = (val: boolean) => {
+      loginDialogVisible.value = val;
+    };
+    return { loginDialogVisible, setLoginDialog };
   },
   {
     // 查看源码==技术文档

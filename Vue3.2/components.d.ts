@@ -7,10 +7,21 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    AlbumList: typeof import('./src/components/AlbumList.vue')['default']
+    ArtistItem: typeof import('./src/components/ArtistItem.vue')['default']
+    Comments: typeof import('./src/components/Comments.vue')['default']
     ElOption: typeof import('element-plus/es')['ElOption']
     ElOptionGroup: typeof import('element-plus/es')['ElOptionGroup']
     ElSelect: typeof import('element-plus/es')['ElSelect']
+    Empty: typeof import('./src/components/Empty.vue')['default']
+    Header: typeof import('./src/components/Header.vue')['default']
+    Loading: typeof import('./src/components/Loading.vue')['default']
+    Login: typeof import('./src/components/Login.vue')['default']
+    Lyrics: typeof import('./src/components/Lyrics.vue')['default']
+    MvList: typeof import('./src/components/MvList.vue')['default']
+    PlayList: typeof import('./src/components/PlayList.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    Search: typeof import('./src/components/Search.vue')['default']
   }
 }

@@ -1,19 +1,15 @@
 <template>
   <h2>HomeView</h2>
-  <h3>{{ counter.count }}</h3>
-  <button @click="counter.increment()">+1</button>
-  <ul>
-    <li v-for="item in getAlbumUrl"><img :src="item" /></li>
-  </ul>
+  login:{{ useIsLogin.isLogin }}
+  <button @click="useIsLogin.setLogin(!useIsLogin.isLogin)">setLogin</button>
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive } from "vue";
+import { reactive } from "vue";
 import { getBanner } from "@/apis/modules";
-import { useCounterStore } from "@/stores";
+import { useIsLoginStore } from "@/stores";
 
-const counter = useCounterStore();
-
+const useIsLogin = useIsLoginStore();
 type getAlbumType = {
   imageUrl: string;
 };

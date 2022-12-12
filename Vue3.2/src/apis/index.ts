@@ -1,5 +1,4 @@
 import * as getApi from "@/apis/modules";
-
 export default getApi;
 // 全部导出引用getApi--
 // @/apis

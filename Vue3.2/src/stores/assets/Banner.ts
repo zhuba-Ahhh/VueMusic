@@ -1,7 +1,7 @@
 import { reactive } from "vue";
 import { defineStore } from "pinia";
 
-type bannerType = Array<string>;
+type bannerType = string[];
 
 const useBannerStore = defineStore(
   "Banner",

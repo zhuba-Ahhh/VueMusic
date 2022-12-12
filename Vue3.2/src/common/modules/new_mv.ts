@@ -6,7 +6,7 @@ import MV_AREA from "../index";
 
 type mv_infoType = {
   mv_area: any;
-  mv_list: Array<string>;
+  mv_list: string[];
   mv_index: number;
   mv_params: paramsType;
   mv_count: number;

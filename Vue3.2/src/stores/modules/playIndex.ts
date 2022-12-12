@@ -6,8 +6,10 @@ const usePlayIndex = defineStore(
   "playIndex",
   () => {
     const playIndex = ref<number>(0);
-
-    return { playIndex };
+    const setPlayIndex = (val: number) => {
+      playIndex.value = val;
+    };
+    return { playIndex, setPlayIndex };
   },
   {
     // 查看源码==技术文档

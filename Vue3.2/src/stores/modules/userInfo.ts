@@ -1,13 +1,15 @@
-import { ref } from "vue";
+import { reactive } from "vue";
 import { defineStore } from "pinia";
-
+import type { infoType } from "@/types/api";
 // 登录用户信息
 const useUserInfo = defineStore(
   "userInfo",
   () => {
-    const userInfo = ref<boolean>(false);
-
-    return { userInfo };
+    let userInfo: infoType = reactive({});
+    const setUserInfo = (val: infoType) => {
+      userInfo = val;
+    };
+    return { userInfo, setUserInfo };
   },
   {
     // 查看源码==技术文档
