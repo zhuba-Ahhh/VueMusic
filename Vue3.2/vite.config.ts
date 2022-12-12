@@ -1,5 +1,4 @@
 import { fileURLToPath, URL } from "node:url";
-import { resolve } from "path";
 // element-plus的按需导入
 import AutoImport from "unplugin-auto-import/vite";
 import Components from "unplugin-vue-components/vite";
@@ -23,9 +22,7 @@ export default defineConfig({
       // 导入全局使用的less
       less: {
         modifyVars: {
-          hack: `true; @import (reference) "${resolve(
-            "src/assets/style/main.less"
-          )}";`,
+          hack: `true; @import (reference) "src/assets/style/main.less";`,
         },
         javascriptEnabled: true,
       },

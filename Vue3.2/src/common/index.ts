@@ -1,8 +1,5 @@
-// 专辑
-interface albumArea {
-  name: string;
-  code: string;
-}
+import type { albumArea } from "./types";
+
 // 歌手类型
 interface Artist {
   label: string;

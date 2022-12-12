@@ -7,6 +7,8 @@ import type {
 } from "axios";
 
 type Result<T> = {
+  [x: string]: any;
+  playlists: string[];
   code: number;
   message: string;
   result: T;
@@ -17,7 +19,12 @@ export class Request {
   baseConfig: AxiosRequestConfig = {
     timeout: 1000 * 60,
     withCredentials: true, //跨域请求时是否需要使用凭证
-    baseURL: "https://netease-cloud-music-api-eight-xi-41.vercel.app/", // 服务端
+    // baseURL: "https://netease-cloud-music-api-eight-xi-41.vercel.app/", // 服务端
+    baseURL:
+      // 测试和生产环境使用不同接口地址
+      process.env.NODE_ENV === "development"
+        ? "https://netease-cloud-music-api-eight-xi-41.vercel.app/"
+        : "https://netease-cloud-music-api-eight-xi-41.vercel.app/",
     validateStatus: (status: number) => {
       return status >= 200 && status < 300;
     },
