@@ -20,8 +20,12 @@ declare module '@vue/runtime-core' {
     Lyrics: typeof import('./src/components/Lyrics.vue')['default']
     MvList: typeof import('./src/components/MvList.vue')['default']
     PlayList: typeof import('./src/components/PlayList.vue')['default']
+    ProgressLine: typeof import('./src/components/ProgressLine.vue')['default']
+    Reply: typeof import('./src/components/Reply.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Search: typeof import('./src/components/Search.vue')['default']
+    Sidebar: typeof import('./src/components/Sidebar.vue')['default']
+    SongList: typeof import('./src/components/SongList.vue')['default']
   }
 }

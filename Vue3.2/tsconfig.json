@@ -12,6 +12,7 @@
     "composite": true,
     "baseUrl": ".",
     "lib": [],
+    "strict": false,
     "types": [
       "node",
       "jsdom"
