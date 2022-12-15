@@ -24,24 +24,27 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { reactive, watch, toRefs } from "vue";
 const emit = defineEmits(["inFocus", "replyMsg"]);
 
 const { params } = defineProps(["params"]);
-const msg = ref<string>(""),
-  maxLen = ref<number>(140);
+const info = reactive({
+  msg: "",
+  maxLen: 140,
+});
+const { msg, maxLen } = toRefs(info);
 
 const subReplyComment = () => {
   emit("replyMsg", msg.value);
 };
 
 watch(
-  () => msg,
+  () => info["msg"],
   () => {
-    msg.value =
-      maxLen.value >= msg.value.length
-        ? msg.value
-        : msg.value.substring(0, maxLen.value);
+    info["msg"] =
+      info["maxLen"] >= info["msg"].length
+        ? info["msg"]
+        : info["msg"].substring(0, info["maxLen"]);
   }
 );
 </script>

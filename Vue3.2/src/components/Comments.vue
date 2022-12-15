@@ -88,7 +88,7 @@ const msgHandler = (res: {
     return ElMessage.error("数据请求失败");
   }
   info.total = res.total;
-  info.hotComments = res.hotComments || [];
+  info.hotComments = res.hotComments;
   info.hotComments.map((item) => {
     item.isHot = true;
     return item;

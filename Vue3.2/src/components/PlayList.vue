@@ -1,5 +1,5 @@
 <template>
-      <el-skeleton
+        <el-skeleton
         :loading="loading"
         animated
         :count="num"
@@ -47,10 +47,10 @@
 <script setup lang="ts">
 import type { mvType } from "@/types";
 import {formartNum} from "@/utils/util"
-const { playList,num,loading} = defineProps({
-  playList: Array<mvType>,
-  num: Number,
-  loading: Boolean
+const { playList, num, loading} = defineProps({
+    playList: Array<mvType>,
+    num: Number,
+    loading: Boolean
 })
 </script>
 
@@ -229,3 +229,4 @@ const { playList,num,loading} = defineProps({
         }
     }
 }
+</style>

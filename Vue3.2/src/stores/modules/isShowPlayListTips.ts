@@ -9,7 +9,7 @@ const useIsShowPlayListTips = defineStore(
     const setIsShowPlayListTips = (val: boolean) => {
       isShowPlayListTips.value = val;
     };
-    return { isShowPlayListTips };
+    return { isShowPlayListTips, setIsShowPlayListTips };
   },
   {
     // 查看源码==技术文档

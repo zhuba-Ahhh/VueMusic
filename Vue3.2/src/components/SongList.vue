@@ -96,7 +96,7 @@
       <el-pagination
         @current-change="currentChange"
         :page-size="pageSize"
-        :current-page.sync="info.currentPage"
+        :current-page.sync="currentPage"
         layout="prev, pager, next"
         :total="songList.length"
       >
@@ -119,11 +119,14 @@ import {
   usePlayListStore,
   useIsPlayedStore,
   usePlayIndexStore,
+  useIsShowPlayListStore,
 } from "@/stores";
 import { selectPlay, addList } from "@/stores/methods";
+import type { songType } from "@/types";
 const usePlayList = usePlayListStore(),
   useIsPlayed = useIsPlayedStore(),
-  usePlayIndex = usePlayIndexStore();
+  usePlayIndex = usePlayIndexStore(),
+  useIsShowPlayList = useIsShowPlayListStore();
 
 const { songList, typeSize, stripe, height, isScroll, offset, pageSize } =
   defineProps({
@@ -172,7 +175,8 @@ const info = reactive({
   playing: false,
   timer: null,
 });
-toRefs(info);
+const { TypeSize, Height, curScroll, PageSize, currentPage, playing, timer } =
+  toRefs(info);
 // 获取播放列表
 // const playIndex = computed(() => {
 //     return store.getters.playIndex
@@ -253,7 +257,7 @@ const curSongInfo = computed(() => {
 // 添加当前歌曲到播放列表
 const addSongList = (item) => {
   addList({ list: [item] });
-  useIsPlayed.setPlayStatus(true);
+  useIsShowPlayList.setIsShowPlayListTips(true);
 };
 
 // 在播放列表删除当前歌曲

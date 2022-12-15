@@ -3,25 +3,365 @@
     <div class="search-container">
       <div class="search-hd">
         <el-select
+          v-model="keyVal"
           class="search-box"
           clearable
           filterable
           remote
           placeholder="请输入歌名、歌词、歌手或专辑"
+          :remote-method="remoteMethod"
+          :fit-input-width="true"
+          :loading="loading"
+          loading-text="搜索中..."
+          @focus="handleFocus"
+          @clear="clearVal"
+          @keyup.enter="enterHandler"
         >
-          <el-option-group>
-            <el-option class="item">
-              <template> </template>
-              <template> - <span class="artists"></span> </template>
+          <el-option-group
+            v-for="list in suggestInfo"
+            :key="listType[list.label]"
+            :label="listType[list.label]"
+          >
+            <el-option
+              v-for="(item, index) in list.info"
+              :key="list.label + index"
+              :label="item.name"
+              :value="list.label + item.name"
+              class="item"
+              @click="jumpPage(item, list.label)"
+            >
+              {{ item.name }}
+              <template v-if="list.label === 'songs'">
+                -
+                <span class="artists" v-for="(a, i) in item.artists" :key="i">{{
+                  (i !== 0 ? " / " : "") + a.name
+                }}</span>
+              </template>
+              <template v-else-if="list.label === 'albums'">
+                - <span class="artists">{{ item.artist.name }}</span>
+              </template>
             </el-option>
           </el-option-group>
         </el-select>
+      </div>
+      <div class="search-main">
+        <h5>
+          搜索结果<em v-show="total">({{ total + typeList[index]["t"] }})</em>
+        </h5>
+        <div class="search-tab">
+          <div
+            class="tab-item"
+            v-for="item in typeList"
+            :key="item.k"
+            :class="{ active: Number(type) == item.k }"
+            @click="selectType(item)"
+          >
+            {{ item.v }}
+          </div>
+        </div>
+        <div class="search-list" v-if="total || loading">
+          <song-list
+            :songList="list"
+            :stripe="true"
+            :offset="offset"
+            :pageSize="limit"
+            v-if="type == '1'"
+          ></song-list>
+          <album-list
+            class="albums"
+            :albumList="list"
+            :loading="loading"
+            :num="limit"
+            v-else-if="type == '10'"
+          ></album-list>
+          <search-artist
+            :list="list"
+            :loading="loading"
+            v-else-if="type == '100'"
+          ></search-artist>
+          <play-list
+            class="play"
+            :playList="list"
+            :loading="loading"
+            :num="limit"
+            v-else-if="type === '1000'"
+          ></play-list>
+          <mv-list
+            :mvList="list"
+            :loading="loading"
+            :num="limit"
+            v-else-if="type === '1004'"
+          ></mv-list>
+        </div>
+        <template v-else>
+          <empty />
+        </template>
+        <div class="pagination" v-show="total > limit">
+          <el-pagination
+            @current-change="currentChange"
+            :current-page="currentpage"
+            :page-size="limit"
+            layout="prev, pager, next"
+            :total="total"
+          >
+          </el-pagination>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import SongList from "@/components/SongList.vue";
+import AlbumList from "@/components/AlbumList.vue";
+import PlayList from "@/components/PlayList.vue";
+import MvList from "@/components/MvList.vue";
+import Empty from "@/components/Empty.vue";
+import SearchArtist from "@/views/search/artist.vue";
+import { onMounted, reactive, toRefs } from "vue";
+import { onBeforeRouteUpdate, useRoute, useRouter } from "vue-router";
+import { formatSongTime, formatMsgTime } from "@/utils/util";
+import { cloudsearch, serachSuggest } from "@/apis/modules";
+import type { typeListType } from "@/types";
+import { ElMessage } from "element-plus";
+
+type infoType = {
+  keyVal: string;
+  type: string;
+  typeList: typeListType[];
+  index: number;
+  total: number;
+  offset: number;
+  limit: number;
+  list: any[];
+  currentpage: number;
+  loading: boolean;
+  listType;
+  suggestInfo: any[];
+};
+const route = useRoute();
+const router = useRouter();
+const info: infoType = reactive({
+  keyVal: route.query.key as string,
+  type: (route.query.type as string) || "1", //  搜索类型；默认为 1 即单曲 , 取值意义 : 1: 单曲, 10: 专辑, 100: 歌手, 1000: 歌单, 1002: 用户, 1004: MV, 1006: 歌词, 1009: 电台, 1014: 视频, 1018:综合
+  typeList: [
+    { k: 1, v: "单曲", t: "首单曲" },
+    { k: 10, v: "专辑", t: "张专辑" },
+    { k: 100, v: "歌手", t: "个歌手" },
+    { k: 1000, v: "歌单", t: "个歌单" },
+    // {k: 1002, v: '用户', t: '个用户'},
+    { k: 1004, v: "MV", t: "个MV" },
+    // {k: 1014, v: '视频', t: '个视频'},
+    // {k: 1018, v: '综合', t: '个'}
+  ],
+  index: 0,
+  total: 0,
+  offset: 0,
+  limit: 24,
+  list: [],
+  currentpage: 0,
+  loading: false,
+  listType: {
+    songs: "单曲",
+    artists: "歌手",
+    albums: "专辑",
+    playlists: "歌单",
+  },
+  suggestInfo: [],
+});
+
+const {
+  keyVal,
+  type,
+  typeList,
+  index,
+  total,
+  offset,
+  limit,
+  list,
+  currentpage,
+  loading,
+  listType,
+  suggestInfo,
+} = toRefs(info);
+
+const remoteMethod = (query: string) => {
+  info["keyVal"] = query;
+
+  if (info["keyVal"]) {
+    info["loading"] = true;
+    info["suggestInfo"] = [];
+
+    getSerachSuggest();
+  }
+};
+
+//搜索框，获取焦点时，请求热门搜索列表接口
+const handleFocus = () => {
+  console.log(info["keyVal"]);
+  if (info["keyVal"]) {
+    info["loading"] = true;
+    info["suggestInfo"] = [];
+
+    getSerachSuggest();
+  }
+};
+
+// 获取搜索结果
+const getSerachMatch = async () => {
+  info["loading"] = true;
+  const { data: res } = await cloudsearch({
+    keywords: info.keyVal,
+    type: info.type,
+    limit: info.limit,
+    offset: info.offset,
+  });
+
+  if (res.code !== 200) {
+    return ElMessage.error("数据请求失败");
+  }
+
+  if (info.type === "1") {
+    info["list"] =
+      res.result.songs &&
+      res.result.songs.map(
+        (item: {
+          id: any;
+          name: any;
+          mv: any;
+          ar: any;
+          al: any;
+          alia: any;
+          fee: number;
+          license: any;
+          dt: number;
+          publishTime: Date;
+        }) => {
+          return {
+            id: String(item.id),
+            name: item.name,
+            mvId: item.mv,
+            singer: item.ar,
+            album: item.al,
+            alia: item.alia,
+            vip: item.fee === 1,
+            license: item.license,
+            duration: formatSongTime(item.dt),
+            url: `https://music.163.com/song/media/outer/url?id=${item.id}.mp3`,
+            publishTime: formatMsgTime(item.publishTime),
+          };
+        }
+      );
+    info.total = res.result.songCount || 0;
+  } else if (info.type === "10") {
+    info.list = res.result.albums || [];
+    info.total = res.result.albumCount || 0;
+  } else if (info.type === "100") {
+    info.list = res.result.artists || [];
+    info.total = res.result.artistCount || 0;
+  } else if (info.type === "1000") {
+    info.list = res.result.playlists || [];
+    info.total = res.result.playlistCount || 0;
+  } else if (info.type === "1004") {
+    info.list = res.result.mvs || [];
+    info.total = res.result.mvCount || 0;
+  } else if (info.type === "1014") {
+    info.list = res.result.videos || [];
+    info.total = res.result.videoCount || 0;
+  }
+  info.loading = false;
+};
+
+const selectType = (item: typeListType) => {
+  info["type"] = "" + item.k;
+  info["total"] = 0;
+  info["offset"] = 0;
+  info["currentpage"] = 0;
+  router.push({
+    path: "/search",
+    query: { key: info.keyVal, type: info.type },
+  });
+};
+
+const currentChange = (page: number) => {
+  info.offset = (page - 1) * info.limit;
+  info.currentpage = page;
+  getSerachMatch();
+};
+
+// 搜索结果列表建议
+const getSerachSuggest = async () => {
+  const { data: res } = await serachSuggest({
+    keywords: info.keyVal,
+  });
+
+  info["loading"] = false;
+  if (res.code !== 200) {
+    return ElMessage.error("数据请求失败");
+  }
+
+  if (res.result.order) {
+    info["suggestInfo"] = res.result.order.map((item: string | number) => {
+      return {
+        label: item,
+        info: res.result[item],
+      };
+    });
+  }
+};
+
+// 搜索建议列表，点击后跳转到相对应的落地页
+const jumpPage = (item: { id: any }, type: any) => {
+  switch (type) {
+    case "songs":
+      router.push({ path: "/song", query: { id: item.id } });
+      break;
+    case "artists":
+      router.push({ path: "/singer", query: { id: item.id } });
+      break;
+    case "albums":
+      router.push({ path: "/album", query: { id: item.id } });
+      break;
+    case "playlists":
+      router.push({ path: "/playlist/detail", query: { id: item.id } });
+      break;
+  }
+};
+
+const clearVal = () => {
+  info["suggestInfo"] = [];
+};
+
+const enterHandler = () => {
+  router.push({
+    path: "/search",
+    query: { key: info.keyVal, type: info.type },
+  });
+};
+
+const init = () => {
+  info["total"] = 0;
+  info["list"] = [];
+  getSerachMatch();
+};
+
+onMounted(() => {
+  info["index"] = info.typeList.findIndex(
+    (item) => item.k == Number(info["type"])
+  );
+  init();
+});
+
+onBeforeRouteUpdate((to) => {
+  info["keyVal"] = to.query.key as string;
+  info["type"] = (to.query.type as string) || "1";
+  info["index"] = info.typeList.findIndex(
+    (item) => item.k == Number(info["type"])
+  );
+
+  init();
+});
+</script>
 
 <style scoped lang="less">
 .search-detail {

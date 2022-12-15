@@ -2,6 +2,7 @@
 
 <template>
   <RouterLink to="/">Home</RouterLink>
+  <RouterLink to="/search">Search</RouterLink>
   <RouterView />
 </template>
 

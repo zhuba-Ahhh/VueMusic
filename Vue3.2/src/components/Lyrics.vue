@@ -1,9 +1,30 @@
 <template>
-  <div></div>
+  <div>
+    <div class="lyrics-main" :style="{ maxHeight: maxH + 'px' }">
+      <div
+        class="lyrics"
+        ref="lyrics"
+        v-if="lyricObj.length"
+        :style="transform"
+      >
+        <p
+          :class="[isCurLyric(index)]"
+          v-for="(item, index) in lyricObj"
+          :key="index"
+        >
+          {{ item.txt }}
+        </p>
+      </div>
+      <div v-else class="lyric-empty">
+        <p v-if="lyric">纯音乐，无歌词</p>
+        <p v-else>歌词加载中......</p>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { reactive, computed } from "vue";
+import { reactive, computed, toRefs } from "vue";
 import { ElMessage } from "element-plus";
 import { lyrics } from "@/apis/modules";
 
@@ -39,6 +60,7 @@ const info: infoType = reactive({
   curIndex: 0,
   isFull: false,
 });
+const { lyric, lyricObj, curIndex, isFull } = toRefs(info);
 
 const isCurLyric = computed(() => {
   return (index: number) => {

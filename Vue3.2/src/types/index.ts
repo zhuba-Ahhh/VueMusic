@@ -60,3 +60,9 @@ export interface mvType {
   trackCount: number;
   coverImgUrl: string;
 }
+
+export type typeListType = {
+  k: number;
+  v: string;
+  t: string;
+};

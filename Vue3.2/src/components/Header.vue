@@ -22,8 +22,7 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import { useRoute } from "vue-router";
-import router from "@/router";
+import { useRoute, useRouter } from "vue-router";
 import { ElMessage } from "element-plus";
 import { logout } from "@/apis/modules";
 import {
@@ -34,6 +33,7 @@ import {
 import Search from "@/components/Search.vue";
 
 const route = useRoute();
+const router = useRouter();
 const useIsLogin = useIsLoginStore(),
   useUserInfo = useUserInfoStore(),
   useLoginDialogVisible = useLoginDialogVisibleStore();

@@ -1,13 +1,29 @@
 <template>
   <div class="list-container">
-    <template> </template>
-    <template> </template>
+    <template v-for="item in list">
+      <artist-item :item="item"></artist-item>
+    </template>
+    <template v-if="loading">
+      <Loading />
+    </template>
   </div>
 </template>
 
 <script setup lang="ts">
-import { reactive } from "vue";
-const { list, loading } = defineProps(["list", "loading"]);
+import Loading from "@/components/Loading.vue";
+import ArtistItem from "@/components/ArtistItem.vue";
+
+const { list, loading } = defineProps({
+  list: {
+    // 歌手信息
+    type: Array,
+    required: true,
+  },
+  loading: {
+    type: Boolean,
+    default: false,
+  },
+});
 </script>
 
 <style scoped lang="less">

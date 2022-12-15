@@ -2,7 +2,7 @@
   <div class="login">
     <el-dialog v-model="isVisible" width="30%" :before-close="handleClose">
       <div class="login-wrapper">
-        <img src="@assets/img/logo.jpg" alt="" class="login-logo" />
+        <img src="@assets/image/logo.jpg" alt="" class="login-logo" />
         <el-form
           ref="loginFormRef"
           :model="loginForm"
@@ -36,7 +36,7 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from "vue";
+import { reactive, ref, toRefs } from "vue";
 import { ElMessage } from "element-plus";
 import { login, getUserInfo } from "@/apis/modules";
 import {
@@ -49,15 +49,18 @@ const useLoginDialogVisible = useLoginDialogVisibleStore(),
   useUserInfo = useUserInfoStore(),
   useIsLogin = useIsLoginStore();
 
-const isVisible = ref(true),
-  loginForm = reactive({
+const isVisible = ref(true);
+const formInfo = reactive({
+  loginForm: {
     phone: "",
     pwd: "",
-  }),
-  loginFormRules = reactive({
+  },
+  loginFormRules: {
     phone: [{ required: true, message: "请输入网易帐号", trigger: "blur" }],
     pwd: [{ required: true, message: "请输入网易密码", trigger: "blur" }],
-  });
+  },
+});
+const { loginForm, loginFormRules } = toRefs(formInfo);
 const handleClose = () => useLoginDialogVisible.setLoginDialog(false);
 
 const GetUserInfo = async (uid: any) => {
@@ -75,7 +78,7 @@ const GetUserInfo = async (uid: any) => {
 const submitForm = () => {
   Proxy.$refs.loginFormRef.validate(async (valid: any) => {
     if (valid) {
-      const { data: res } = await login(loginForm);
+      const { data: res } = await login(loginForm.value);
 
       if (res.code !== 200) {
         ElMessage.error(res.msg);
