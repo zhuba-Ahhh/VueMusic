@@ -89,7 +89,7 @@ const { albumList, num, loading } = defineProps({
       right: -20px;
       width: 100%;
       height: 100%;
-      background: url("@assets/image/disc.png") no-repeat;
+      background: url("@/assets/image/disc.png") no-repeat;
       background-size: contain;
       transition: all 0.4s linear;
     }

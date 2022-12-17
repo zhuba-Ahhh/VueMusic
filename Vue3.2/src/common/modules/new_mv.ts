@@ -1,12 +1,12 @@
 import { reactive, onMounted } from "vue";
 import { mv } from "@/apis/modules";
 import { ElMessage } from "element-plus";
-import type { paramsType } from "../types";
+import type { mvType, paramsType } from "@/types";
 import MV_AREA from "../index";
 
 type mv_infoType = {
   mv_area: any;
-  mv_list: string[];
+  mv_list: mvType[];
   mv_index: number;
   mv_params: paramsType;
   mv_count: number;

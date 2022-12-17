@@ -5,13 +5,14 @@
 <script setup lang="ts">
 import { reactive, computed, watch, onMounted } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
-import type { infoType } from "@/types/api";
+import type { infoType } from "@/types";
 import getApi from "@/apis";
 import {
   useUserInfoStore,
   useIsLoginStore,
   useLoginDialogVisibleStore,
 } from "@/stores";
+
 const useUserInfo = useUserInfoStore(),
   useIsLogin = useIsLoginStore(),
   useLoginDialog = useLoginDialogVisibleStore();
@@ -28,7 +29,7 @@ const { sId, type } = defineProps({
 const info: infoType = reactive({
   msg: "",
   maxLen: 140,
-  curId: [Number, String],
+  curId: sId,
   limit: 20,
   offset: 0,
   before: 0,

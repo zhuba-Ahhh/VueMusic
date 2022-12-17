@@ -1,6 +1,8 @@
-import usePlayListStore from "./modules/playList"; // 播放列表
-import usePlayIndexStore from "./modules/playIndex"; // 当前播放歌曲在播放列表的所有位置
-import useIsPlayedStore from "./modules/isPlayed"; // 当前播放状态
+import {
+  usePlayListStore, // 播放列表
+  usePlayIndexStore, // 当前播放歌曲在播放列表的所有位置
+  useIsPlayedStore, // 当前播放状态
+} from "@/stores";
 
 import type { songType } from "@/types";
 import util from "@/utils/util";

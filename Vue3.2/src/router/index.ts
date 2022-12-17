@@ -1,7 +1,13 @@
 import { createRouter, createWebHistory } from "vue-router";
 import baseRouters from "./modules/base";
 
-const routes = [...baseRouters];
+const routes = [
+  {
+    path: "/",
+    redirect: "/index",
+  },
+  ...baseRouters,
+];
 // createWebHistory 历史路由 createWebHashHistory // 哈希路由
 
 const router = createRouter({

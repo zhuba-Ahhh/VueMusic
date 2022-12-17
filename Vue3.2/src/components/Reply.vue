@@ -25,7 +25,7 @@
 
 <script setup lang="ts">
 import { reactive, watch, toRefs } from "vue";
-const emit = defineEmits(["inFocus", "replyMsg"]);
+const emit = defineEmits(["replyMsg"]);
 
 const { params } = defineProps(["params"]);
 const info = reactive({

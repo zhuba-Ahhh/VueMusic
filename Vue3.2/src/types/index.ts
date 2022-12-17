@@ -67,3 +67,38 @@ export type typeListType = {
   v: string;
   t: string;
 };
+
+export interface sId {
+  type: [Number, String];
+}
+export interface infoType {
+  msg?: string;
+  maxLen?: number;
+  curId?: [Number, String];
+  limit?: number;
+  offset?: number;
+  before?: number;
+  hotComments?: [];
+  comments?: [];
+  total?: number;
+  currentPage?: number;
+  isEmpty?: false;
+  replyCommentId?: number;
+  replyIndex?: number;
+  avatarUrl?: string;
+  nickname?: string;
+}
+
+// 专辑
+export interface albumArea {
+  name: string;
+  code: string;
+}
+
+// 请求传参
+export interface paramsType {
+  limit: number;
+  order?: string;
+  cat?: string;
+  area?: string;
+}

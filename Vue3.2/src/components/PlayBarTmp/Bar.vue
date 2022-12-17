@@ -184,12 +184,14 @@ const usePlayList = usePlayListStore(),
   useIsPlayed = useIsPlayedStore(),
   useIsShowPlayList = useIsShowPlayListStore();
 
-const emit = defineEmits(["inFocus", "playAudioMode"]),
-  emit1 = defineEmits(["inFocus", "setVolumeHandler"]),
-  emit2 = defineEmits(["inFocus", "setvolumeProgress"]),
-  emit3 = defineEmits(["inFocus", "audioHandler"]),
-  emit4 = defineEmits(["inFocus", "setAudioProgress"]),
-  emit5 = defineEmits(["inFocus", "changeMini"]);
+const emit = defineEmits([
+  "playAudioMode",
+  "setVolumeHandler",
+  "setvolumeProgress",
+  "audioHandler",
+  "setAudioProgress",
+  "changeMini",
+]);
 
 const info = reactive({
   // 歌词弹窗时，固定播放条
@@ -284,7 +286,7 @@ const volumeHandler = () => {
   info["isMuted"] && (info["oldVolume"] = info["volumeNum"]);
   info["volumeNum"] = info["isMuted"] ? 0 : info["oldVolume"];
 
-  emit1("setVolumeHandler", info["isMuted"]);
+  emit("setVolumeHandler", info["isMuted"]);
 };
 
 // 点击拖拽音量条，设置当前音量
@@ -293,7 +295,7 @@ const setvolumeProgress = (params: { val: number }) => {
   info["oldVolume"] = params.val;
   info["isMuted"] = !!(params.val ? 0 : 1);
 
-  emit2("setvolumeProgress", params.val);
+  emit("setvolumeProgress", params.val);
 };
 
 // 播放暂停按钮
@@ -308,7 +310,7 @@ const mutedIcon = computed(() => {
 
 // 音频播放/暂停/上一首/下一首事件
 const audioHandler = (type: any) => {
-  emit3("audioHandler", type);
+  emit("audioHandler", type);
 
   if (info["isPip"]) {
     changePipSong();
@@ -323,11 +325,11 @@ const setAudioProgress = (params: { val: number; flag: any }) => {
 
   // 拖拽的时候，不实时更改音频的时间
   if (params.flag) {
-    emit4("setAudioProgress", info["currentTime"]);
+    emit("setAudioProgress", info["currentTime"]);
   }
 };
 const changeMini = () => {
-  emit5("changeMini", "MiniBar");
+  emit("changeMini", "MiniBar");
 };
 
 const popverHandle = () => {
@@ -422,7 +424,7 @@ const actionHandlers = [
 ];
 
 for (const [action, type] of actionHandlers) {
-  navigator.mediaSession.setActionHandler(action, () => {
+  navigator.mediaSession.setActionHandler(action as MediaSessionAction, () => {
     audioHandler(type);
     changePipSong();
 

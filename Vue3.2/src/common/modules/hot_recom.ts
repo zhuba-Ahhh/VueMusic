@@ -1,16 +1,16 @@
 import { reactive, onMounted } from "vue";
 import { hotList, playList } from "@/apis/modules";
 import { ElMessage } from "element-plus";
-import type { paramsType } from "../types";
+import type { mvType, paramsType } from "@/types";
 
 type tagsName = {
-[x: string]: string | number | symbol;
+  [x: string]: string | number | symbol;
   name: string;
 };
 
 type playlist_infoType = {
   playlist_tags: tagsName[];
-  playlist_list: string[];
+  playlist_list: mvType[];
   playlist_index: number;
   playlist_params: paramsType & { offset: number };
   playlist_count: number;
@@ -67,7 +67,7 @@ export default function hot_recom() {
       return ElMessage.error("数据请求失败");
     }
 
-    playlist_info["playlist_list"] = res.playlists;
+    playlist_info["playlist_list"] = res.playlists as any;
     playlist_info["playlist_loading"] = false;
   };
 

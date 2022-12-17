@@ -6,13 +6,13 @@
     @canplay="canplaySong"
     @playing="playSong"
     @ended="endedSong"
-    @error="errorSong"
     @timeupdate="updateSongTime"
     :src="curSongInfo.url"
   ></audio>
 </template>
 
 <script setup lang="ts">
+// @error="errorSong"
 import { computed, nextTick, reactive, ref, watch } from "vue";
 import {
   useIsPlayedStore,

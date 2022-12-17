@@ -13,7 +13,7 @@
 
 <script setup lang="ts">
 import { reactive } from "vue";
-const emit = defineEmits(["inFocus", "setProgressLine"]);
+const emit = defineEmits(["setProgressLine"]);
 
 const { progressWidth, isShowBtn } = defineProps({
   progressWidth: {

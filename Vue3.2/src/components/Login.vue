@@ -2,7 +2,7 @@
   <div class="login">
     <el-dialog v-model="isVisible" width="30%" :before-close="handleClose">
       <div class="login-wrapper">
-        <img src="@assets/image/logo.jpg" alt="" class="login-logo" />
+        <img src="@/assets/image/logo.jpg" alt="" class="login-logo" />
         <el-form
           ref="loginFormRef"
           :model="loginForm"

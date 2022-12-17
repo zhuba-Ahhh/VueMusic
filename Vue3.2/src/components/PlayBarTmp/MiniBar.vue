@@ -86,10 +86,12 @@ import {
 } from "@/stores";
 import { formatSongSecond, formatSongTime } from "@/utils/util";
 
-const emit = defineEmits(["inFocus", "audioHandler"]),
-  emit1 = defineEmits(["inFocus", "playAudioMode"]),
-  emit2 = defineEmits(["inFocus", "setAudioProgress"]),
-  emit3 = defineEmits(["inFocus", "changeMini"]);
+const emit = defineEmits([
+  "playAudioMode",
+  "audioHandler",
+  "setAudioProgress",
+  "changeMini",
+]);
 
 const usePlayIndex = usePlayIndexStore(),
   usePlayList = usePlayListStore(),
@@ -120,7 +122,7 @@ const audioHandler = (type) => {
 const changePlayMode = () => {
   info["playMode"] = info["playMode"] >= 2 ? 0 : info["playMode"] + 1;
 
-  emit1("playAudioMode", info["playMode"]);
+  emit("playAudioMode", info["playMode"]);
 };
 
 // 音频播放进度条
@@ -140,7 +142,7 @@ const setAudioProgress = (params) => {
 
   // 拖拽的时候，不实时更改音频的时间
   if (params.flag) {
-    emit2("setAudioProgress", info["currentTime"]);
+    emit("setAudioProgress", info["currentTime"]);
   }
 };
 
@@ -173,7 +175,7 @@ const changeWrapper = () => {
 };
 
 const changeBar = () => {
-  emit3("changeMini", "Bar");
+  emit("changeMini", "Bar");
 };
 </script>
 
