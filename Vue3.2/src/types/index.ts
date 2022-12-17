@@ -59,6 +59,7 @@ export interface mvType {
   tags: string[];
   trackCount: number;
   coverImgUrl: string;
+  desc?: string;
 }
 
 export type typeListType = {

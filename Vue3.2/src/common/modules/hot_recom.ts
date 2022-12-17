@@ -4,6 +4,7 @@ import { ElMessage } from "element-plus";
 import type { paramsType } from "../types";
 
 type tagsName = {
+[x: string]: string | number | symbol;
   name: string;
 };
 
